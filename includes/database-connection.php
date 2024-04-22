@@ -6,6 +6,8 @@ $db       = 'kylenade_csc406_project_database';                      // Name of 
 $port     = '3306';                           // Port is usually 3306 in Hostgator
 $charset  = 'utf8mb4';                       // UTF-8 encoding using 4 bytes of data per char
 
+$username = 'kylenade_k3';     // Enter YOUR cPanel username and user here
+$password = 'csc436csc436';           // Enter YOUR user password here
 
 // DO *NOT* CHANGE ANYTHING BENEATH THIS LINE
 
