@@ -1,4 +1,8 @@
 <!DOCTYPE>
+<?php
+include 'includes/log.php';
+require_login($logged_in);                  // Redirect user if not logged in
+?>
 <html>
 
 	<head>
