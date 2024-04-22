@@ -109,7 +109,9 @@ include 'includes/log.php';
   </div>
   <div class="bottom-nav">
     <button class="nav-btn"> buy again </button>
-    <button class="nav-btn"> track order</button>
+    <div class="track-order">
+      <a href="order_status.php" class="nav-btn">Track Order</a>
+    </div>
     <button class="nav-btn"> change order </button>
     <button class="nav-btn"> change info </button>
   </div>
