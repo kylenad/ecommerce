@@ -109,12 +109,19 @@
 <body>
   <div class="top-nav">
     <div class="logo">
-      <a href="index.php"><img src="nile.png" alt=""></a>
+      <a href="newmain.php"><img src="nile.png" alt=""></a>
     </div>
 
     <div class="search-container">
       <div class="search-bar">
-        <input type="search" placeholder="Search for anything">
+        <form action="productSearch.php" method="GET">
+          <input type="search" name=searchValue placeholder="Search for anything">
+          <button type="submit">
+            <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M15.7955 15.8111L21 21M18 10.5C18 14.6421 14.6421 18 10.5 18C6.35786 18 3 14.6421 3 10.5C3 6.35786 6.35786 3 10.5 3C14.6421 3 18 6.35786 18 10.5Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </form>
       </div>
       <div class="search-logo">
       </div>
@@ -159,13 +166,13 @@
   
   <div class="main-hub-container">
     <div class="back-to-prev">
-      <a href="index.php">
+      <a href="newmain.php">
         <span class="arrow left"></span>
         <span class="ux-textspans"> Back to home page </span>
       </a>
       <div class="link-list-container">
-        <a href="index.php"><span> Home </span> <span class="arrow right"></span></a>
-        <a href="list.php"><span> Products </span> <span class="arrow right"></span></a>
+        <a href="newmain.php"><span> Home </span> <span class="arrow right"></span></a>
+        <a href="productSearch.php"><span> Products </span> <span class="arrow right"></span></a>
         <a href="product.php"><span> Items </span> <span class="arrow right"></span></a>
       </div>
     </div>
@@ -173,12 +180,6 @@
       <div class="left-container">
         <div class="img-scroll">
           <img src="<?= $product['productURL'] ?>" alt="productName">
-        </div>
-        <div class="bottom-img">
-          <div class="mini-img"></div>
-          <div class="mini-img"></div>
-          <div class="mini-img"></div>
-          <div class="mini-img"></div>
         </div>
       </div>
       <div class="right-container">
