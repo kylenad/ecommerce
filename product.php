@@ -241,6 +241,10 @@
     <div class="about-item"></div>
     
     <div class="reviews">
+      <div class="reviews-title">
+        <h1> Reviews </h1> 
+        <h1> (<?= $product['productReviewCount'] ?>) </h1>
+      </div>
       <?php
         if (!empty($review)) {
             // Loop through each vendor record

@@ -421,6 +421,17 @@ form {
   color: var(--backgroundColor);
 }
 
+.reviews-title {
+  width: 20%;
+  display: flex;
+  justify-content: left;
+  gap: 16px;
+  border-bottom: solid 2px var(--backgroundColor);
+  margin-bottom: 20px;
+  margin-top: 20px;
+  
+}
+
 .review-row {
   width: 100%;
   margin-bottom: 16px;
