@@ -88,6 +88,13 @@
     text-align: center;
     color: black;
   }
+
+  .custinfo {
+    height: 30px;
+    margin: 16px 0px 16px 0px;
+    text-align: left;
+    color: black;
+  }
   
   .main-banner-container {
     width: 100%;

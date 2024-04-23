@@ -72,16 +72,16 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {     // If form submitted
 		<main>
 
 			<div class="order-lookup-container">
-				<div class="order-lookup-container">
+				<div class="welcome">
 					<h1>Account Log In</h1>
 					<form action="login.php" method="POST">
 						<div class="form-group">
-							<label for="fname">First Name:</label>
+							<label for="fname">Username:</label>
 							<input type="text" id="fname" name="fname" required>
 						</div>
 
 						<div class="form-group">
-							<label for="lname">Last Name:</label>
+							<label for="lname">Password:</label>
 							<input type="text" id="lname" name="lname" required>
 						</div>
 

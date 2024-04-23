@@ -109,6 +109,13 @@ body {
   color: var(--backgroundColor);
 }
 
+.custinfo {
+    height: 30px;
+    margin: 16px 0px 16px 0px;
+    text-align: left;
+    color: var(--backgroundColor); 
+  }
+
 .main-banner-container {
   width: 100%;
   height: 250px;
