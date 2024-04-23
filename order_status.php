@@ -140,6 +140,7 @@
   						      -->
 						    <h1>Order Details</h1>
                             <?php foreach ($orderInfo as $item): ?>
+								<p><img src="<?= htmlspecialchars($item['productURL']) ?>" alt="<?= htmlspecialchars($item['productName']) ?>"></p>
                                 <p><strong>Product:</strong> <?= htmlspecialchars($item['productName']) ?></p>
                                 <p><strong>Quantity:</strong> <?= htmlspecialchars($item['quantity']) ?></p>
                                 <p><strong>Total Cost:</strong> $<?= htmlspecialchars(number_format($item['tot_cost'], 2)) ?></p>
