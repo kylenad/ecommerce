@@ -51,9 +51,21 @@
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link href="https://fonts.googleapis.com/css2?family=Lilita+One&display=swap" rel="stylesheet">
         <style>
-        .order-details p {
+        .order-details {
             color: #000000; /* Sets text color to black */
+			display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+			padding-top: 75px;
         }
+
+		.user-btn {
+                padding: 10px 20px;
+                font-size: 0.8em;
+        }
+
         .error-message {
             color: #FF0000; /* Sets error messages to red for visibility */
         }
