@@ -312,7 +312,6 @@ body {
   width: 50%;
   height: 100%;
   margin-left: 20px;
-  background-color: black;
 }
 
 .img-scroll {
@@ -329,25 +328,23 @@ body {
   object-fit: cover;
 }
 
-.bottom-img {
-  margin-top: 10px;
-  width: 100%;
-  height: 96px;
-  display: flex;
-}
-
-.mini-img {
-  width: 96px;
-  height: 96px;
-  background-color: red;
-  border-radius: 16px;
-}
-
 .right-container {
   width: 50%;
   margin-right: 20px;
   height: 100%;
-  background-color: white;
+  color: var(--backgroundColor);
+}
+
+.title {
+  color: var(--backgroundColor);
+  width: 100%;
+  height: auto;
+}
+
+.title h2 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .ux-textspans {
@@ -385,6 +382,12 @@ form {
   align-items: center;
 }
 
+.right-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
 .user-btn {
    width: 50%;
    height: 48px;
@@ -405,8 +408,60 @@ form {
   display: inline-block;
   width: 100%;
   height: calc(100% - 120px); 
-  background-color: blue;
   overflow: auto; 
   margin-left: 20px;
   margin-right: 20px;
+  color: var(--backgroundColor);
+}
+
+.review-row {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.review-row p {
+  width: 60%;
+  white-space: normal;
+  overflow-wrap: break-word;
+}
+
+.quantity-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#quantity {
+  margin-left: 16px;
+  margin-right: 16px;
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  border-radius: 4px;
+}
+
+/* Hide the increment and decrement buttons */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield; /* Firefox */
+}
+
+/* Normal link styling */
+a {
+  color: var(--backgroundColor); /* Set the color of the link */
+}
+
+/* Styling links on hover */
+a:hover {
+  text-decoration: underline; /* Add underline on hover */
+}
+
+/* Styling visited links */
+a:visited {
+  color: black; /* Change color for visited links */
 }
