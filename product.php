@@ -66,6 +66,26 @@
         ':tot_cost' => $total_cost
       ]);
     }
+    
+    function get_vendor_info(PDO $pdo, $brand_id) {
+      $sql = "SELECT * 
+				FROM ven_info_table
+				WHERE vendorID= :id;";
+				
+			$vendor = pdo($pdo, $sql, ['id' => $brand_id])->fetch();	
+
+			return $vendor;
+    }
+
+    function get_review_info(PDO $pdo, $prod_id) {
+      $sql = "SELECT * 
+				FROM review_table AS rt
+				WHERE rt.productID= :id;";
+				
+			$review = pdo($pdo, $sql, ['id' => $prod_id])->fetchAll(PDO::FETCH_ASSOC);		
+
+			return $review;
+    }
 
     // The form has been submitted using post method, add to cart is clicked, and prodnum is set in the form 
     if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_to_cart']) && isset($_POST['prodnum'])) {
@@ -93,8 +113,11 @@
       write_to_order($pdo, $cust_id, $prod_id, $quantity);
     }
 
+    // Get Product Information 
     $prod_id = $_GET['prodnum']; 
     $product = get_info($pdo, $prod_id);
+    $vendor = get_vendor_info($pdo, intval($product['brandID']));
+    $review = get_review_info($pdo, $prod_id);
 // Closing PHP tag  ?> 
 
 <!DOCTYPE>
@@ -187,8 +210,8 @@
           <p> <?= $product['productName'] ?> </p>
         </div>
         <div class="vendor">
-
         </div>
+
 
         <div class="price"></div>
 
@@ -196,20 +219,35 @@
 
        
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?' . $_SERVER['QUERY_STRING']; ?>" method="POST">
-          <input type="hidden" name="prodnum" value="<?php echo isset($_GET['prodnum']) ? $_GET['prodnum'] : ''; ?>">
-          <input type="number" name="quantity" value="<?php echo isset($_POST['quantity']) ? $_POST['quantity'] : '1'; ?>" min=1 oninput="validity.valid||(value='');">
-          <button type="submit" class="user-btn" name="buy-item">Buy</button>
-          <button type="submit" class="user-btn" name="add_to_cart">Add to Cart</button>
-          <button type="submit" class="user-btn" name="add_to_watch">Add to Watchlist</button>
-      </form>
+            <input type="hidden" name="prodnum" value="<?php echo isset($_GET['prodnum']) ? $_GET['prodnum'] : ''; ?>">
+            <input type="number" name="quantity" value="<?php echo isset($_POST['quantity']) ? $_POST['quantity'] : '1'; ?>" min=1 oninput="validity.valid||(value='');">
+            <button type="submit" class="user-btn" name="buy-item">Buy</button>
+            <button type="submit" class="user-btn" name="add_to_cart">Add to Cart</button>
+            <button type="submit" class="user-btn" name="add_to_watch">Add to Watchlist</button>
+        </form>
       
 
         <div class="status info"></div>
       </div>
     </div>
     <div class="recent-viewed-container"></div>
+
     <div class="about-item"></div>
-    <div class="reviews"></div>
+    
+    <div class="reviews">
+      <?php
+        if (!empty($review)) {
+            // Loop through each vendor record
+            foreach ($review as $row) {
+              echo '<p>' . $row['rev_text'] . '</p>'; 
+              echo '<p>' . $row['rating'] . '</p>'; 
+              echo '<p>' . $row['Helpfulness'] . '</p>'; 
+            }
+        } else {
+            echo '<p> No Review information available.</p>';
+        }
+      ?>
+    </div>
   </div>
 </body>
 </html>
