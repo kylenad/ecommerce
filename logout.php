@@ -1,4 +1,10 @@
 <?php
-include 'includes/log.php';
-logout();                             // Call logout() to terminate session
-header('Location: login.php');         // Redirect to home page
+session_start();
+
+session_unset();
+
+session_destroy();
+
+header("Location: login.php");
+exit();
+?>

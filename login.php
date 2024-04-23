@@ -1,14 +1,20 @@
 <?php
+session_start();
 
 	// Include the database connection script
 require 'includes/database-connection.php';
-include 'includes/log.php';
+//include 'includes/log.php';
 
+/* 
 if ($logged_in) {                              // If already logged in
     header('Location: newmain.php');           // Redirect to account page
     exit;                                      // Stop further code running
 }    
-
+*/
+if(isset($_SESSION['fname'])){
+	header("Location: changeInfo.php");
+	exit();
+}
 
 function getUserInfo($fname, $lname, $pdo) {
     $sql = "SELECT *
@@ -24,12 +30,17 @@ function getUserInfo($fname, $lname, $pdo) {
 
 if($_SERVER['REQUEST_METHOD'] == 'POST') {     // If form submitted
     $fname   = $_POST['fname'];          // Email user sent
-    $lname = $_POST['lname'];       // Password user sent
+    $lname = $_POST['lname'];       	 // Password user sent
 
     $userInfo = getUserInfo($fname, $lname, $pdo);
 
     if(!empty($userInfo)){
-        login();
+        //login();
+
+		$_SESSION['custID'] = $userInfo['custID'];
+		$_SESSION['fname'] = $userInfo['fname'];
+		$_SESSION['lname'] = $userInfo['lname'];
+
         header('Location: newmain.php');
         exit;
     }
@@ -43,7 +54,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {     // If form submitted
 		<meta charset="UTF-8">
   		<meta name="viewport" content="width=device-width, initial-scale=1.0">
   		<title>NILE</title>
-  		<link rel="stylesheet" href="css/style.css">
+  		<link rel="stylesheet" href="./style.css">
   		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link href="https://fonts.googleapis.com/css2?family=Lilita+One&display=swap" rel="stylesheet">
