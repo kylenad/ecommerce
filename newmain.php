@@ -113,7 +113,7 @@ include 'includes/log.php';
       <a href="order_status.php" class="nav-btn">Track Order</a>
     </div>
     <button class="nav-btn"> change order </button>
-    <button class="nav-btn"> change info </button>
+    <a href="changeInfo.php" class="nav-btn"> Change Info</a>
   </div>
 
   <div class="welcome">
