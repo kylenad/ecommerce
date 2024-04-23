@@ -69,22 +69,18 @@ $customerInfo = getCustomerInfo($custID, $pdo);
 <meta charset="UTF-8">
   		<meta name="viewport" content="width=device-width, initial-scale=1.0">
   		<title>Customer Information</title>
-  		<link rel="stylesheet" href="./style.css">
+  		<link rel="stylesheet" href="./css/style.css">
   		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link href="https://fonts.googleapis.com/css2?family=Lilita+One&display=swap" rel="stylesheet">
 </head>
     <body>
+        <div class="welcome">
         <h1>Customer Information</h1>
-        <div class="body">
             <p><strong>First Name:</strong> <?= $customerInfo['fname'] ?></p>
 			<p><strong>Last Name:</strong> <?= $customerInfo['lname'] ?></p>
 			<p><strong>Customer ID:</strong> <?= $customerInfo['custID'] ?></p>
 			<p><strong>Join Date:</strong> <?= $customerInfo['join_date'] ?></p>
-    </div>
-         <?php if (isset($_SESSION['fname'])): ?>
-            <a href="logout.php" class=submit >Log Out</a>
-         <?php endif; ?>
 
         <?php if (isset($customerInfo) && $customerInfo): ?>
            <form action="" method="post">
@@ -96,7 +92,15 @@ $customerInfo = getCustomerInfo($custID, $pdo);
             <input type="submit" name="updateCard" value="Update Card Number">
            </form>
         <?php endif; ?>
-        ?>
+
+        
+        <?php if (isset($_SESSION['fname'])): ?>
+            <form action="logout.php" method="POST">
+                    <button type="submit">Log Out</button>
+         </form>
+         <?php endif; ?>
+         
+        </div>
      </body>
 
 </html>
