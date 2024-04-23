@@ -49,13 +49,17 @@
   		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link href="https://fonts.googleapis.com/css2?family=Lilita+One&display=swap" rel="stylesheet">
+		<link rel="stylesheet" href="./css/style.css">
         <style>
-        .order-details p {
-            color: #000000; /* Sets text color to black */
-        }
-        .error-message {
-            color: #FF0000; /* Sets error messages to red for visibility */
-        }
+        	/* Override text color for specific elements */
+    		h1, label, .error-message {
+        		color: var(--pallete1); /* Adjust this variable if needed */
+    		}
+
+			.order-details p {
+        		color: var(--pallete1); /* Or any color that offers contrast against the background */
+        		/* Additional styles for font-size, font-family etc., if needed */
+    		}
         </style>
 	</head>
 
@@ -104,6 +108,7 @@
   						      -->
 						    <h1>Order Details</h1>
                             <?php foreach ($orderInfo as $item): ?>
+								<p><img src="<?= htmlspecialchars($item['productURL']) ?>" alt="<?= htmlspecialchars($item['productName']) ?>"></p>
                                 <p><strong>Product:</strong> <?= htmlspecialchars($item['productName']) ?></p>
                                 <p><strong>Quantity:</strong> <?= htmlspecialchars($item['quantity']) ?></p>
                                 <p><strong>Total Cost:</strong> $<?= htmlspecialchars(number_format($item['tot_cost'], 2)) ?></p>
