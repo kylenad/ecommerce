@@ -115,6 +115,12 @@
 
         .error-message {
             color: #FF0000; /* Sets error messages to red for visibility */
+			      display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+			      padding-top: 25px;
         }
         </style>
 	</head>
@@ -203,7 +209,7 @@
                   <?php endforeach; ?>
                 </div>
                     <?php else: ?>
-                    <div class="card order-details">
+                    <div class="card error-message">
                         <p>No order details found for the provided order number. Please try again.</p>
                     </div>
 				    <?php endif; ?>
