@@ -51,19 +51,66 @@
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link href="https://fonts.googleapis.com/css2?family=Lilita+One&display=swap" rel="stylesheet">
         <style>
+          :root {
+            --backgroundColor: #CCDAD1; /* Assuming this is a dark background */
+            --pallete1: #6F6866; /* Gray */
+            --pallete2: #788585; /* Lighter Gray */
+            --pallete3: #9CAEA9; /* Green */
+            --pallete4: #CCDAD1; /* Light Green */
+            --pallete5: #F8F8F8; /* Off White */
+            --pallete6: #000000; /* Black */
+        }
+        .card {
+          background-color: var(--pallete5); /* Off White */
+          border-radius: 10px;
+          box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+          padding: 20px;
+          margin: 20px auto; /* This centers the card in the middle of the page */
+          width: 80%; 
+          max-width: 600px; /* Maximum width of the card */
+          color: var(--pallete6); /* Text color */
+          margin-top: 165px;
+        }
+        .order-lookup-container h1 {
+          margin-bottom: 20px; 
+        }
+
+        .order-lookup-container label {
+          display: block;
+          margin-bottom: 10px;
+          font-size: 1.5em;
+        }
+
+        .order-lookup-container input[type="number"] {
+          margin-bottom: 10px; 
+          font-size: 1.5em;
+        }
+
+        .order-lookup-container {
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          height: 150px; 
+        }
+        .order-lookup-container button[type="submit"] {
+          font-size: 1em; /* Smaller font size for the button */
+          padding: 15px 30px;
+          
+        }
+        
         .order-details {
             color: #000000; /* Sets text color to black */
-			display: flex;
+			      display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             width: 100%;
-			padding-top: 75px;
+			      padding-top: 25px;
         }
 
-		.user-btn {
-                padding: 10px 20px;
-                font-size: 0.8em;
+		    .user-btn {
+                padding: 20px 40px;
+                font-size: 1.5em;
         }
 
         .error-message {
@@ -145,22 +192,22 @@
 				  -->
 				<?php if ($formSubmitted): ?>
 				    <?php if (!empty($orderInfo)): ?>
-					    <div class="order-details">
+              <div class="card order-details">
 
-						    <!-- 
-				  		      -- TO DO: Fill in ALL the placeholders for this order from the db
-  						      -->
-						    <h1>Order Details</h1>
-                            <?php foreach ($orderInfo as $item): ?>
-								<p><img src="<?= htmlspecialchars($item['productURL']) ?>" alt="<?= htmlspecialchars($item['productName']) ?>"></p>
-                                <p><strong>Product:</strong> <?= htmlspecialchars($item['productName']) ?></p>
-                                <p><strong>Quantity:</strong> <?= htmlspecialchars($item['quantity']) ?></p>
-                                <p><strong>Total Cost:</strong> $<?= htmlspecialchars(number_format($item['tot_cost'], 2)) ?></p>
-                                <p><strong>Status:</strong> <?= htmlspecialchars($item['status']) ?></p>
-                                <p><strong>Date Ordered:</strong> <?= htmlspecialchars($item['date_ordered']) ?></p>
-                                <p><strong>Date Delivered:</strong> <?= htmlspecialchars($item['date_delivered']) ?></p>
-                            <?php endforeach; ?>
-                        </div>
+						      <!-- 
+				  		        -- TO DO: Fill in ALL the placeholders for this order from the db
+  						        -->
+						      <h1>Order Details</h1>
+                  <?php foreach ($orderInfo as $item): ?>
+                    <p><img src="<?= htmlspecialchars($item['productURL']) ?>" alt="<?= htmlspecialchars($item['productName']) ?>"></p>
+                    <p><strong>Product:</strong> <?= htmlspecialchars($item['productName']) ?></p>
+                    <p><strong>Quantity:</strong> <?= htmlspecialchars($item['quantity']) ?></p>
+                    <p><strong>Total Cost:</strong> $<?= htmlspecialchars(number_format($item['tot_cost'], 2)) ?></p>
+                    <p><strong>Status:</strong> <?= htmlspecialchars($item['status']) ?></p>
+                    <p><strong>Date Ordered:</strong> <?= htmlspecialchars($item['date_ordered']) ?></p>
+                    <p><strong>Date Delivered:</strong> <?= htmlspecialchars($item['date_delivered']) ?></p>
+                  <?php endforeach; ?>
+                </div>
                     <?php else: ?>
                         <p>No order details found for the provided order number. Please try again.</p>
 				    <?php endif; ?>
