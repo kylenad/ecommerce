@@ -142,7 +142,7 @@
 
     <div class="icons-container">
       <div class="cart">
-      <a href="cart.php">
+      <a href="">
         <svg width="800px" height="800px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M6.29977 5H21L19 12H7.37671M20 16H8L6 3H3M9 20C9 20.5523 8.55228 21 8 21C7.44772 21 7 20.5523 7 20C7 19.4477 7.44772 19 8 19C8.55228 19 9 19.4477 9 20ZM20 20C20 20.5523 19.5523 21 19 21C18.4477 21 18 20.5523 18 20C18 19.4477 18.4477 19 19 19C19.5523 19 20 19.4477 20 20Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
@@ -187,16 +187,10 @@
 					</form>
 				</div>
 				
-				<!-- 
-				  -- TO-DO: Check if variable holding order is not empty. Make sure to replace null with your variable!
-				  -->
 				<?php if ($formSubmitted): ?>
 				    <?php if (!empty($orderInfo)): ?>
               <div class="card order-details">
 
-						      <!-- 
-				  		        -- TO DO: Fill in ALL the placeholders for this order from the db
-  						        -->
 						      <h1>Order Details</h1>
                   <?php foreach ($orderInfo as $item): ?>
                     <p><img src="<?= htmlspecialchars($item['productURL']) ?>" alt="<?= htmlspecialchars($item['productName']) ?>"></p>
@@ -209,7 +203,9 @@
                   <?php endforeach; ?>
                 </div>
                     <?php else: ?>
+                    <div class="card order-details">
                         <p>No order details found for the provided order number. Please try again.</p>
+                    </div>
 				    <?php endif; ?>
                 <?php endif; ?>
 
