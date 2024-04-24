@@ -8,6 +8,7 @@
   --pallete2: #788585;
   --pallete3: #9CAEA9;
   --pallete4: #CCDAD1;
+  --money-green: #009c4a;
 }
 
 body {
@@ -224,7 +225,8 @@ body {
 
 .product-row {
   display: flex;
-  justify-content: space-between;
+  justify-content: left;
+  gap: 23px;
   margin-bottom: 12px;
 }
 
@@ -316,7 +318,7 @@ body {
 }
 
 .left-container {
-  width: 50%;
+  width: 60%;
   height: 100%;
   margin-left: 20px;
 }
@@ -336,7 +338,7 @@ body {
 }
 
 .right-container {
-  width: 50%;
+  width: 40%;
   margin-right: 20px;
   height: 100%;
   color: var(--backgroundColor);
@@ -365,6 +367,7 @@ body {
   display: flex;
   justify-content: left;
   gap: 40px;
+  margin-bottom: 16px;
 }
 
 .arrow {
@@ -384,26 +387,27 @@ body {
   -webkit-transform: rotate(135deg);
 }
 
-form {
-  margin: 0 auto;
-  align-items: center;
-}
-
-.right-container form {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
 .user-btn {
-   width: 50%;
+   width: 100%;
    height: 48px;
    border-radius: 48px;
    border: solid 2px var(--backgroundColor);
    text-align: center;
+   background-color: var(--pallete2);
+   font-weight: bold;
+}
+
+.user-btn-v2 {
+  width: 49%;
+  height: 48px;
+  border-radius: 48px;
+  border: solid 2px var(--backgroundColor);
+  text-align: center;
+  font-weight: bold;
 }
 
 .user-btn:hover, 
+.user-btn-v2:hover, 
 .product-list-cart:hover,
 .left-filter button:hover,
 .right-filter button:hover
@@ -411,7 +415,7 @@ form {
   background-color: var(--pallete3);
 }
 
-.reviews {
+.reviews, .about-item {
   display: inline-block;
   width: 100%;
   height: calc(100% - 120px); 
@@ -419,6 +423,24 @@ form {
   margin-left: 20px;
   margin-right: 20px;
   color: var(--backgroundColor);
+  padding-left: 12px;
+}
+
+.about-item {
+  margin-top: 16px;
+  width: 90%;
+  border-bottom: solid 2px var(--backgroundColor);
+  padding-left: 12px;
+}
+
+.about-item h1 {
+  width: 18%;
+  display: flex;
+  justify-content: left;
+  gap: 16px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+  text-decoration: underline;
 }
 
 .reviews-title {
@@ -426,15 +448,16 @@ form {
   display: flex;
   justify-content: left;
   gap: 16px;
-  border-bottom: solid 2px var(--backgroundColor);
+  text-decoration: underline;
   margin-bottom: 20px;
   margin-top: 20px;
   
 }
 
 .review-row {
-  width: 100%;
+  width: 90%;
   margin-bottom: 16px;
+  border-bottom: solid 2px var(--backgroundColor);
 }
 
 .review-row p {
@@ -445,8 +468,10 @@ form {
 
 .quantity-container {
   display: flex;
-  justify-content: center;
+  justify-content: start;
   align-items: center;
+  margin-bottom: 20px;
+  font-weight: 500;
 }
 
 #quantity {
@@ -482,4 +507,85 @@ a:hover {
 /* Styling visited links */
 a:visited {
   color: black; /* Change color for visited links */
+}
+
+.user-interaction-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.user-interaction-container form {
+  margin: 0 0 0 0;
+  width: 100%;
+}
+
+.product-btn-option {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 12px;
+}
+
+.price {
+  color: var(--money-green);
+}
+
+.vendor {
+  margin: 12px 0 12px 0;
+  display: flex;
+  align-items: center;
+  width: 88%;
+  height: 82px;
+  border-radius: 8px;
+  border: solid 2px var(--backgroundColor);
+  padding: 4px;
+}
+
+.vendor .company-icon {
+  margin-right: 8px;
+}
+
+.company-info-tags {
+  display: flex;
+}
+
+.tag {
+  display: flex;
+}
+
+.tag::after {
+  content: "•";
+  color: var(--pallete1);
+  text-shadow: var(--pallete1) 0 0 3px;
+  margin:0 4px;
+}
+.tag:last-child::after {
+  content: "";
+}
+
+.deliver-container {
+  display: flex;
+  height: 50px;
+  width: 90%;
+  gap: 6px;
+  align-items: center;
+  border-bottom: solid 2px var(--backgroundColor);
+  margin-bottom: 20px;
+}
+
+.top-cart {
+  width: 100%;
+  height: 64px;
+  display: flex;
+  justify-content: center;
+  margin: 12px 0 12px 0;
+}
+
+.top-cart form {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
 }

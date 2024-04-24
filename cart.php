@@ -8,28 +8,11 @@
     $custID = $_SESSION['custID'];
   } 
 
-  // Get the search value from the search query
-  if(isset($_GET['searchValue'])) {
-    $search_term = $_GET['searchValue'];
-  } 
-
-  function get_info(PDO $pdo, $search_term) {
-    $sql = "SELECT * 
-      FROM product_table
-      WHERE productName LIKE :searchTerm";
-    
-    $stmt = $pdo->prepare($sql);
-    $stmt->bindValue(':searchTerm', '%' . $search_term . '%');
-    $stmt->execute();
-
-    return $stmt;
- }
-
- function get_item_price(PDO $pdo, $prod_id) {
+  function get_item_price(PDO $pdo, $prod_id) {
     //Calculate the cost of the items 
     $sql_price = "SELECT productPrice 
-    FROM price_table
-    WHERE priceID= :price_id;";
+      FROM price_table
+      WHERE priceID= :price_id;";
 
     // Fetch the corresponding item price
     $cost = pdo($pdo, $sql_price, [
@@ -37,48 +20,103 @@
     ])->fetch();
 
     return $cost;
- }
-
-  function write_to_cart(PDO $pdo, $cust_id, $prod_id, $quantity) {
-
-    $sql_check = "SELECT *
+  }
+ 
+  function get_cart(PDO $pdo, $cust_id) {
+    $sql = "SELECT * 
       FROM cart_table
-      WHERE custID=:cust_id AND productID= :prod_id;";
+      JOIN product_table on product_table.productID=cart_table.productID 
+      WHERE custID= :cust_id;";
 
-    $existing_item = pdo($pdo, $sql_check, [
-      ':cust_id' => $cust_id, 
-      ':prod_id' => $prod_id
-    ])->fetch();
+    $cart_item = pdo($pdo, $sql, [
+      ':cust_id' => $cust_id,
+    ]);
 
-    if($existing_item) {
-      // If item exist in cart, update the quantity
-      $sql_update = "UPDATE cart_table SET quantity= quantity + :quantity
-      WHERE custID= :cust_id AND productID= :prod_id;";
+    return $cart_item;
+  }
 
-      $update_cart = pdo($pdo, $sql_update, [
+  function delete_from_cart(PDO $pdo, $prod_id) {
+    $sql = "DELETE FROM cart_table 
+      WHERE productID=:prod_id;";
+
+    $updated_cart = pdo($pdo, $sql, [
+      ':prod_id' => $prod_id,
+    ]);
+  }
+
+  // The form has been submitted using post method, add to cart is clicked, and prodnum is set in the form 
+  if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['remove-from-cart'])) {
+    $cust_id = $custID; 
+    $prod_id = $_POST['prodnum']; 
+
+    delete_from_cart($pdo, $prod_id);
+  }
+
+  if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['quantity'])) {
+    $cust_id = $custID; 
+    $prod_id = $_POST['prodnum']; 
+    $quantity = $_POST['quantity'];
+
+    // Update the quantity in the cart
+    $sql_quantity = "UPDATE cart_table SET quantity = :quantity 
+      WHERE custID = :cust_id AND productID = :prod_id";
+
+    $update_quantity = pdo($pdo, $sql_quantity, [
+        ':quantity' => $quantity,
         ':cust_id' => $cust_id,
-        ':prod_id' => $prod_id,
-        ':quantity' => $quantity
-      ]);
-    } else {
-      // If item doesn't exist in cart, add to cart
-      $sql = "INSERT INTO cart_table (custID, productID, quantity)
-        VALUES (:cust_id, :prod_id, :quantity)";
-  
-      $cart_item = pdo($pdo, $sql, [
-        ':cust_id' => $cust_id,
-        ':prod_id' => $prod_id,
-        ':quantity' => $quantity
-      ]);
+        ':prod_id' => $prod_id
+    ]);
+}
+
+// Check if the "Buy Cart Items" button is clicked
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['buy-items'])) {
+  // Retrieve all items from the cart for the current customer
+  $cart_items = get_cart($pdo, $custID);
+
+  if(!$cart_items) {
+    echo "No Items Were Added to Cart";
+  }
+  else {
+    // Initialize total price
+    $total_price = 0;
+
+    // Loop through cart items to calculate total price
+    while ($row = $cart_items->fetch(PDO::FETCH_ASSOC)) {
+        // Get the price of the current item
+        $item_price = get_item_price($pdo, $row['productID']);
+        $cost = $item_price['productPrice'] * $row['quantity'];
+
+        // Determine the latest order number and add 1 to it.
+        $sql_max = "SELECT MAX(orderID) AS ord_id FROM order_info_table";
+        $max_order_num = pdo($pdo, $sql_max)->fetch();
+        $new_order_num = $max_order_num["ord_id"] + 1;
+
+        // Make an order : insert all information into order_table
+        $sql_order = "INSERT INTO order_info_table (orderID, custID, itemID, quantity, tot_cost)
+        VALUES (:orderID, :custID, :itemID, :quantity, :tot_cost)";
+
+        $order = pdo($pdo, $sql_order, [
+          ':orderID' => $new_order_num,
+          ':custID' => $row['custID'],
+          ':itemID' => $row['productID'],
+          ':quantity' => $row['quantity'],
+          ':tot_cost' => $cost
+        ]);
+    }
+
+    // After inserting the order, remove all items from the cart
+    $delete_cart_sql = "DELETE FROM cart_table WHERE custID = :cust_id";
+    $delete_cart = pdo($pdo, $delete_cart_sql, [
+        ':cust_id' => $custID
+    ]);
+    
+    // Redirect the user to the orders page or display a success message
+    header("Location: newmain.php");
+    exit(); // Stop further execution
     }
   }
 
-  if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_to_cart'])) {
-    $prod_id = $_POST['prodnum']; 
-    $quantity = 1;
-
-    write_to_cart($pdo, $custID, $prod_id, $quantity);
-  }
+  
 // Closing PHP tag  ?> 
 
 <!DOCTYPE>
@@ -131,6 +169,8 @@
 
       <div class="heart">
         <a href="order_status.php">
+        <?xml version="1.0" encoding="utf-8"?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+        <?xml version="1.0" encoding="utf-8"?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
         <svg width="800px" height="800px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path fill-rule="evenodd" clip-rule="evenodd" d="M1 6C1 4.89543 1.89543 4 3 4H14C15.1046 4 16 4.89543 16 6V7H19C21.2091 7 23 8.79086 23 11V12V15V17C23.5523 17 24 17.4477 24 18C24 18.5523 23.5523 19 23 19H22H18.95C18.9828 19.1616 19 19.3288 19 19.5C19 20.8807 17.8807 22 16.5 22C15.1193 22 14 20.8807 14 19.5C14 19.3288 14.0172 19.1616 14.05 19H7.94999C7.98278 19.1616 8 19.3288 8 19.5C8 20.8807 6.88071 22 5.5 22C4.11929 22 3 20.8807 3 19.5C3 19.3288 3.01722 19.1616 3.05001 19H2H1C0.447715 19 0 18.5523 0 18C0 17.4477 0.447715 17 1 17V6ZM16.5 19C16.2239 19 16 19.2239 16 19.5C16 19.7761 16.2239 20 16.5 20C16.7761 20 17 19.7761 17 19.5C17 19.2239 16.7761 19 16.5 19ZM16.5 17H21V15V13H19C18.4477 13 18 12.5523 18 12C18 11.4477 18.4477 11 19 11H21C21 9.89543 20.1046 9 19 9H16V17H16.5ZM14 17H5.5H3V6H14V8V17ZM5 19.5C5 19.2239 5.22386 19 5.5 19C5.77614 19 6 19.2239 6 19.5C6 19.7761 5.77614 20 5.5 20C5.22386 20 5 19.7761 5 19.5Z" fill="#000000"/>
 </svg>
@@ -140,25 +180,29 @@
 
   </div>
   <div class="bottom-nav">
-  </div>
-
-  <div class="filter-container">
-    <div class="left-filter">
-        <button> Estimated Delivery </button>
-        <button> All Filters </button>
     </div>
-    <div class="right-filter">
-      <button> Sort by: Relevancy </button>
-    </div>
-  </div>
+    <div class="top-cart">
 
-  <?php
-    if (!empty($search_term)) {
-        $productSearch = get_info($pdo, $search_term);
+      <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?' . $_SERVER['QUERY_STRING']; ?>" method="POST">
+              <input type="hidden" name="prodnum" value="<?php echo isset($_GET['prodnum']) ? $_GET['prodnum'] : ''; ?>">
+          
+              <button type="submit" class="product-list-cart" name="buy-items"> Buy Cart Items </button>
+              </div>
+      </form>
+    </div>
+    <?php
+
+        // Get the search value from the search query
+        if(isset($_SESSION['custID'])) {
+          $custID = $_SESSION['custID'];
+        } 
+
+        $cart_item = get_cart($pdo, $custID);
         $count = 0; // Initialize a counter to keep track of the number of items
 
-        // Output data of each row
-        while ($row = $productSearch->fetch(PDO::FETCH_ASSOC)) {
+        if(!empty($cart_item)) {
+             // Output data of each row
+          while ($row = $cart_item->fetch(PDO::FETCH_ASSOC)) {
             // Start a new row after every 4 items
             if ($count % 4 == 0) {
                 echo '<div class="product-row">';
@@ -186,28 +230,29 @@
             // Add form for adding item to cart
             echo '<form action="' . htmlspecialchars($_SERVER["PHP_SELF"]) . '?' . $_SERVER['QUERY_STRING'] . '" method="POST">';
             echo '<input type="hidden" name="prodnum" value="' . $row['productID'] . '">';
-            echo '<button type="submit" class="product-list-cart" name="add_to_cart"> + Add to Cart</button>';
+            echo '<button type="submit" class="product-list-cart" name="remove-from-cart">Remove</button>';
+            echo '<input type="number" id="quantity" name="quantity" value="' . $row['quantity'] . '" oninput="validity.valid||(value=\'\');">';
             echo '</form>';
 
-            echo '</div>';
-            // End the row after every 4 items
-            if ($count % 4 == 3) {
-                echo '</div>';
-            }
+          echo '</div>';
+          // End the row after every 4 items
+          if ($count % 4 == 3) {
+              echo '</div>';
+          }
 
-            $count++; // Increment the counter
-        }
+          $count++; // Increment the counter
+      }
 
-        // Close the row if the total number of items is not divisible by 4
-        if ($count % 4 != 0) {
-            echo '</div>';
-        }
+      // Close the row if the total number of items is not divisible by 4
+      if ($count % 4 != 0) {
+          echo '</div>';
+      }
 
-        // If no items were found, display a message
-        if ($count == 0) {
-            echo '<p> No items found.</p>';
+      // If no items were found, display a message
+      if ($count == 0) {
+          echo '<p> No items found.</p>';
+      }
         }
-    }
     ?>
 
   
