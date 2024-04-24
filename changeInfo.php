@@ -69,7 +69,6 @@ $customerInfo = getCustomerInfo($custID, $pdo);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Customer Information</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Lilita+One&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -78,12 +77,22 @@ $customerInfo = getCustomerInfo($custID, $pdo);
             --pallete2: #788585; /* Lighter Gray */
             --pallete3: #9CAEA9; /* Green */
             --pallete4: #CCDAD1; /* Light Green */
-            --pallete5: #F8F8F8 /* Off White */
+            --pallete5: #F8F8F8; /* Off White */
+            --pallete6: #000000; /* Black */
         }
         body {
             padding-top: 20px;
             background-color: var(--backgroundColor);
-            color: var(--pallete3); /* Primary text color now green */
+            color: var(--pallete1); /* Primary text color now green */
+        }
+        label {
+            color: var(--pallete6);
+        }
+        h5 {
+            color: var(--pallete6);
+        }
+        p {
+            color: var(--pallete6);
         }
         .container {
             max-width: 600px;
@@ -106,12 +115,12 @@ $customerInfo = getCustomerInfo($custID, $pdo);
            border-radius: 8px; 
 }
         .btn-primary {
-            background-color: var(--pallete3); /* Main green color for primary buttons */
+            background-color: var(--pallete1); /* Main green color for primary buttons */
             border-color: var(--pallete4);
         }
         .btn-danger {
             background-color: var(--pallete1);
-            border-color: var(--pallete2);
+            border-color: var(--pallete4);
         }
         .logout-btn {
             margin-top: 15px;
