@@ -14,9 +14,10 @@ if(isset($_SESSION['custID'])){
 
 function getCustomerInfo($custID, $pdo) {
     try {
-        $sql = "SELECT cust_info_table.*, cust_cards_table.card_number 
-                FROM cust_info_table 
+        $sql = "SELECT cust_info_table.*, cust_cards_table.card_number, cust_addresses_table.address
+                FROM cust_info_table
                 LEFT JOIN cust_cards_table ON cust_info_table.custID = cust_cards_table.custID
+                LEFT JOIN cust_addresses_table ON cust_info_table.custID = cust_addresses_table.custID
                 WHERE cust_info_table.custID = :custID";
         $stmt = $pdo->prepare($sql);
         $stmt->execute(['custID' => $custID]);
@@ -28,10 +29,23 @@ function getCustomerInfo($custID, $pdo) {
 }
 
 function updateCardNumber($custID, $cardNumber, $pdo) {
+    if (!empty($cardNumber)) { // Check if the card number is not empty
+        try {
+            $sql = "UPDATE cust_cards_table SET card_number = :card_number WHERE custID = :custID";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute(['custID' => $custID, 'card_number' => $cardNumber]);
+            return $stmt->rowCount();
+        } catch (PDOException $e) {
+            die("Error: " . $e->getMessage());
+        }
+    }
+}
+
+function updateCustomerAddress($custID, $address, $pdo) {
     try {
-        $sql = "UPDATE cust_cards_table SET card_number = :card_number WHERE custID = :custID";
+        $sql = "UPDATE cust_addresses_table SET address = :address WHERE custID = :custID";
         $stmt = $pdo->prepare($sql);
-        $stmt->execute(['custID' => $custID, 'card_number' => $cardNumber]);
+        $stmt->execute(['custID' => $custID, 'address' => $address]);
         return $stmt->rowCount();
 
     } catch (PDOException $e) {
@@ -39,26 +53,29 @@ function updateCardNumber($custID, $cardNumber, $pdo) {
     }
 }
 
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['updateCard'])) {
-    $custID = $_POST['custID'];
-    $cardNumber = $_POST['card_number'];
+function maskCardNumber($cardNumber) {
+    return str_repeat('*', strlen($cardNumber) - 4) . substr($cardNumber, -4);
+}
 
-    $updateCount = updateCardNumber($custID, $cardNumber, $pdo);
-    if ($updateCount > 0) {
-        echo "<p>Card number updated successfully.</p>";
-    } else {
-        echo "<p>Update failed or no changes made.</p>";
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (isset($_POST['updateCard']) && !empty($_POST['card_number'])) {
+        $cardNumber = $_POST['card_number'];
+        $updateCount = updateCardNumber($custID, $cardNumber, $pdo);
+        echo $updateCount > 0 ? "<p>Card number updated successfully.</p>" : "<p>Update failed or no changes made.</p>";
+    }
+
+    if (isset($_POST['updateAddress']) && !empty($_POST['address'])) {
+        $address = $_POST['address'];
+        $updateCount = updateCustomerAddress($custID, $address, $pdo);
+        echo $updateCount > 0 ? "<p>Address updated successfully.</p>" : "<p>Update failed or no changes made.</p>";
     }
 }
 
-/*
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['fetchInfo'])) {
-    // Handle fetch
-    $custID = $_POST['custID'];
-    $customerInfo = getCustomerInfo($custID, $pdo);
-} */
-
 $customerInfo = getCustomerInfo($custID, $pdo);
+
+if ($customerInfo) {
+    $customerInfo['card_number'] = maskCardNumber($customerInfo['card_number']);
+}
 
 ?>
 
@@ -97,6 +114,7 @@ $customerInfo = getCustomerInfo($custID, $pdo);
         }
         .container {
             max-width: 600px;
+            height: 80%;
             background-color: var(--pallete5); 
             color: var(--pallete2); /* Secondary text color */
             border-radius: 10px;
@@ -150,14 +168,21 @@ $customerInfo = getCustomerInfo($custID, $pdo);
                     <form action="" method="post">
                         <input type="hidden" name="custID" value="<?= htmlspecialchars($customerInfo['custID']); ?>">
                         <div class="form-group">
-                            <label for="card_number">Card Number</label>
-                            <input type="text" class="form-control" id="card_number" name="card_number" 
-                                   value="<?= htmlspecialchars($customerInfo['card_number'] ?? ''); ?>" placeholder="Enter new card number">
+                            <label for="card_number_display">Card Number</label>
+                            <input type="text" class="form-control" id="card_number_display" 
+                            value="<?= htmlspecialchars($customerInfo['card_number'] ?? ''); ?>" placeholder="Card Number" readonly>
+                            <small class="form-text text-muted">Enter new card number below to update.</small>
+                            <input type="text" class="form-control" id="card_number" name="card_number" placeholder="Enter new card number">
+                        </div>
+                        <div class="form-group">
+                            <label for="address">Address</label>
+                            <input type="text" class="form-control" id="address" name="address"
+                             value="<?= htmlspecialchars($customerInfo['address'] ?? ''); ?>" placeholder="Enter new address">
                         </div>
                         <button type="submit" name="updateCard" class="btn btn-primary">Update Card Number</button>
+                        <button type="submit" name="updateAddress" class="btn btn-primary">Update Address</button>
                     </form>
                 <?php endif; ?>
-
                 <?php if (isset($_SESSION['fname'])): ?>
                     <form action="logout.php" method="POST" class="logout-btn">
                         <button type="submit" class="btn btn-danger">Log Out</button>
