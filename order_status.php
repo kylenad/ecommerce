@@ -1,7 +1,7 @@
 <?php
     require 'includes/database-connection.php';
     //require 'product_images.php'; // Include the mapping file
-    //Test
+    //Test1
 
     function getOrderInfo($orderNum, $pdo) {
         try {
