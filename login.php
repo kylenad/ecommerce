@@ -40,7 +40,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {     // If form submitted
 		$_SESSION['custID'] = $userInfo['custID'];
 		$_SESSION['email'] = $userInfo['email'];
 		$_SESSION['password'] = $userInfo['password'];
-        $_SESSION['fname'] = $userInfo['password'];
+        $_SESSION['fname'] = $userInfo['fname'];
 
         header('Location: newmain.php');
         exit;
@@ -54,7 +54,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {     // If form submitted
 	<head>
 		<meta charset="UTF-8">
   		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-  		<title>NILE</title>
+  		<title>NILE: Login</title>
   		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -135,7 +135,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {     // If form submitted
 					<h1 class="card-title">Account Log In</h1>
 					<form action="login.php" method="POST">
 						<div class="form-group">
-							<label for="email"><strong>Username:</strong></label>
+							<label for="email"><strong>Email:</strong></label>
 							<input type="text" id="email" name="email" required>
 						</div>
 

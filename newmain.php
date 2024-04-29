@@ -4,10 +4,10 @@
   if(isset($_SESSION['email'])){
     $email = $_SESSION['email'];
     $password = $_SESSION['password'];
+    $fname  = $_SESSION['fname'];
   }
   else{
-    $email = "Guest";
-    $password = "User";
+    $fname = "Guest";
   }
 
 
@@ -55,7 +55,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>NILE: Homepage</title>
   <link rel="stylesheet" href="./css/style.css">
 	<link rel="preconnect" href="https://rsms.me/">
 	<link rel="stylesheet" href="https://rsms.me/inter/inter.css">
@@ -115,7 +115,7 @@
   </div>
 
   <div class="welcome">
-    <h2> Welcome back, <?php echo $email; ?>! </h2>
+    <h2> Welcome back, <?php echo $fname; ?>! </h2>
   </div>
 
   <div class="main-banner-container">
