@@ -3,7 +3,7 @@ session_start();
 
 require 'includes/database-connection.php';
 
-if(!isset($_SESSION['fname'])){
+if(!isset($_SESSION['email'])){
     header("Location: login.php");
     exit();
 }
@@ -183,7 +183,7 @@ if ($customerInfo) {
                         <button type="submit" name="updateAddress" class="btn btn-primary">Update Address</button>
                     </form>
                 <?php endif; ?>
-                <?php if (isset($_SESSION['fname'])): ?>
+                <?php if (isset($_SESSION['email'])): ?>
                     <form action="logout.php" method="POST" class="logout-btn">
                         <button type="submit" class="btn btn-danger">Log Out</button>
                     </form>

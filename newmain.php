@@ -1,15 +1,15 @@
 <?php   										// Opening PHP tag
-	
   session_start();
 
-  if(isset($_SESSION['fname'])){
-    $fname = $_SESSION['fname'];
-    $lname = $_SESSION['lname'];
+  if(isset($_SESSION['email'])){
+    $email = $_SESSION['email'];
+    $password = $_SESSION['password'];
   }
   else{
-    $fname = "Guest";
-    $lname = "User";
+    $email = "Guest";
+    $password = "User";
   }
+
 
 	// Include the database connection script
 	require 'includes/database-connection.php';
@@ -36,6 +36,8 @@
 		// Return the toy information (associative array)
 		return $product;
 	}
+
+
 
 	// Retrieve info about toy with ID '0001' from the db using provided PDO connection
 	$product = get_product($pdo, '12');
@@ -113,7 +115,7 @@
   </div>
 
   <div class="welcome">
-    <h2> Welcome back, <?php echo $fname; ?>! </h2>
+    <h2> Welcome back, <?php echo $email; ?>! </h2>
   </div>
 
   <div class="main-banner-container">

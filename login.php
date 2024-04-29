@@ -11,35 +11,36 @@ if ($logged_in) {                              // If already logged in
     exit;                                      // Stop further code running
 }    
 */
-if(isset($_SESSION['fname'])){
+if(isset($_SESSION['email'])){
 	header("Location: changeInfo.php");
 	exit();
 }
 
-function getUserInfo($fname, $lname, $pdo) {
+function getUserInfo($email, $password, $pdo) {
     $sql = "SELECT *
             FROM cust_info_table
-            WHERE fname = :fname AND lname = :lname";
+            WHERE email = :email AND password = :password";
 
     $stmt = $pdo->prepare($sql);
-    $stmt->execute(['fname' => $fname, 'lname' => $lname]);
+    $stmt->execute(['email' => $email, 'password' => $password]);
     $orderInfo = $stmt->fetch(PDO::FETCH_ASSOC);
 
     return $orderInfo;
  }
 
 if($_SERVER['REQUEST_METHOD'] == 'POST') {     // If form submitted
-    $fname   = $_POST['fname'];          // Email user sent
-    $lname = $_POST['lname'];       	 // Password user sent
+    $email   = $_POST['email'];          // Email user sent
+    $password = $_POST['password'];       	 // Password user sent
 
-    $userInfo = getUserInfo($fname, $lname, $pdo);
+    $userInfo = getUserInfo($email, $password, $pdo);
 
     if(!empty($userInfo)){
         //login();
 
 		$_SESSION['custID'] = $userInfo['custID'];
-		$_SESSION['fname'] = $userInfo['fname'];
-		$_SESSION['lname'] = $userInfo['lname'];
+		$_SESSION['email'] = $userInfo['email'];
+		$_SESSION['password'] = $userInfo['password'];
+        $_SESSION['fname'] = $userInfo['password'];
 
         header('Location: newmain.php');
         exit;
@@ -134,13 +135,13 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {     // If form submitted
 					<h1 class="card-title">Account Log In</h1>
 					<form action="login.php" method="POST">
 						<div class="form-group">
-							<label for="fname"><strong>Username:</strong></label>
-							<input type="text" id="fname" name="fname" required>
+							<label for="email"><strong>Username:</strong></label>
+							<input type="text" id="email" name="email" required>
 						</div>
 
 						<div class="form-group">
-							<label for="lname"><strong>Password:</strong></label>
-							<input type="text" id="lname" name="lname" required>
+							<label for="password"><strong>Password:</strong></label>
+							<input type="text" id="password" name="password" required>
 						</div>
 
 						<button type="submit">Log In</button>
