@@ -145,5 +145,9 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {     // If form submitted
 						</div>
 
 						<button type="submit">Log In</button>
+                        <br>
+                        <p>
+                             Don't have an account? <a href="register.php" class="btn-link">Register here</a>
+                        </p>
 					</form>
 				</div>
