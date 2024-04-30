@@ -2,4 +2,5 @@
 deployment:
   tasks:
     - export DEPLOYPATH=/home/kylenadeau09/public_html/
-    - /bin/cp -R * $DEPLOYPATH
+    - /bin/cp -R * $DEPLOYPATH 
+    - /bin/cp newmain.php $DEPLOYPATH
