@@ -46,4 +46,3 @@ function pdo(PDO $pdo, string $sql, array $arguments = null)
         return $statement;               // Return PDOStatement object
     }
                                           
-// Closing PHP tag  ?>                                             
