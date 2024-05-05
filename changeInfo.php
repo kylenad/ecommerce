@@ -24,8 +24,16 @@ function getCustomerInfo($custID, $pdo) {
                 WHERE cust_info_table.custID = :custID";
         $stmt = $pdo->prepare($sql);
         $stmt->execute(['custID' => $custID]);
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        $customerInfo = $stmt->fetch(PDO::FETCH_ASSOC);
 
+        // Check if the card number is null and update it
+        if ($customerInfo && empty($customerInfo['card_number'])) {
+            $defaultCardNumber = '184293849483';  // Default card number
+            updateCardNumber($custID, $defaultCardNumber, $pdo);
+            $customerInfo['card_number'] = $defaultCardNumber;  // Update local data
+        }
+
+        return $customerInfo;
     } catch (PDOException $e) {
         die("Error: " . $e->getMessage());
     }
