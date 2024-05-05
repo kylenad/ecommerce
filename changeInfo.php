@@ -57,6 +57,9 @@ function updateCustomerAddress($custID, $address, $pdo) {
 }
 
 function maskCardNumber($cardNumber) {
+    if ($cardNumber === null || strlen($cardNumber) < 4) {
+        return null; // Or return some default mask like '****' if that fits your application logic
+    }
     return str_repeat('*', strlen($cardNumber) - 4) . substr($cardNumber, -4);
 }
 
